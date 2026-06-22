@@ -1,0 +1,44 @@
+[
+  {
+    "id": "mentor_1",
+    "name": "Abhilasha Sharma",
+    "area_of_expertise": "Corporate Law & Banking Disputes",
+    "years_of_experience": 5,
+    "bio": "Advocate Abhilasha Sharma is a legal professional with over five years of experience in handling matters before tribunals, debt/banking disputes, and consumer forums, specializing in insurance disputes and claim rejections."
+  },
+  {
+    "id": "mentor_2",
+    "name": "Abhishek Jaswal",
+    "area_of_expertise": "Litigation & Bank/NBFC Disputes",
+    "years_of_experience": 8,
+    "bio": "Litigation advocate handling complex bank and NBFC disputes, SARFAESI notices, debt recovery tribunal (DRT) cases, corporate legal strategy, compliance, and legal drafting."
+  },
+  {
+    "id": "mentor_3",
+    "name": "Devansh Agarwal",
+    "area_of_expertise": "Loan Settlement & OTS Negotiation",
+    "years_of_experience": 6,
+    "bio": "Financial advisory specialist at Credit Curators. Guides individuals and corporates in loan settlement, One-Time Settlement (OTS) negotiations, and resolving financial distress caused by loan mis-selling."
+  },
+  {
+    "id": "mentor_4",
+    "name": "Gaurav Gangwani",
+    "area_of_expertise": "Commercial & Non-Motor Insurance Claims",
+    "years_of_experience": 11,
+    "bio": "With over 11 years of experience in non-motor insurance claims, Gaurav Gangwani specializes in fire, marine, engineering, and workmen compensation claims."
+  },
+  {
+    "id": "mentor_5",
+    "name": "Milind Dole",
+    "area_of_expertise": "Non-Life Insurance Claims & Ombudsman Disputes",
+    "years_of_experience": 30,
+    "bio": "Insurance ombudsman specialist with 30 years exclusively in non-life insurance claims. Has adjudicated motor, health, fire, marine, and commercial insurance claims disputes."
+  },
+  {
+    "id": "mentor_6",
+    "name": "Ritank Kumar",
+    "area_of_expertise": "Civil Litigation & Insurance Claim Recovery",
+    "years_of_experience": 4,
+    "bio": "Delhi-based advocate focused exclusively on insurance claim conflicts, claim recovery, civil litigation, and consumer court cases against insurers."
+  }
+]
