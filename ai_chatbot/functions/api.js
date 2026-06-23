@@ -13,6 +13,24 @@ const app = express();
 // Middleware
 app.use(express.json());
 
+// Fallback body parser for serverless-http environments
+app.use((req, res, next) => {
+  if (!req.body || Object.keys(req.body).length === 0) {
+    if (req.apiGateway && req.apiGateway.event && req.apiGateway.event.body) {
+      try {
+        let bodyText = req.apiGateway.event.body;
+        if (req.apiGateway.event.isBase64Encoded) {
+          bodyText = Buffer.from(bodyText, 'base64').toString('utf8');
+        }
+        req.body = JSON.parse(bodyText);
+      } catch (err) {
+        console.error('Failed to parse body from apiGateway event:', err);
+      }
+    }
+  }
+  next();
+});
+
 // Initialize Google GenAI
 const apiKey = process.env.GEMINI_API_KEY;
 const ai = new GoogleGenAI({ apiKey: apiKey });
