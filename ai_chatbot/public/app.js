@@ -148,7 +148,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (!response.ok) {
-        throw new Error('Server responded with an error');
+        let errorMessage = 'Server responded with an error';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.details || errorData.error || errorMessage;
+        } catch (_) {
+          // Fallback if response is not JSON
+        }
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -167,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
       console.error('Chat Error:', error);
       hideTypingIndicator();
-      appendMessage('bot', 'I am sorry, I am having trouble connecting to my service right now. Please verify the server is running and try again shortly.');
+      appendMessage('bot', `I am sorry, I am having trouble connecting to my service right now. (Error: ${error.message})`);
     }
 
     scrollChatToBottom();
