@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
   // DOM Elements
-  const mentorsGrid = document.getElementById('mentors-grid');
   const chatToggleBtn = document.getElementById('chat-toggle-btn');
   const chatWidget = document.getElementById('chat-widget');
   const chatCloseBtn = document.getElementById('chat-close-btn');
@@ -12,10 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Chat State
   let chatHistory = []; // format: { role: 'user' | 'model', text: string }
-  let mentorsList = [];
-
-  // Initialize: Fetch Mentors for Dashboard
-  fetchMentors();
 
   // Event Listeners
   chatToggleBtn.addEventListener('click', toggleChat);
@@ -32,70 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-
-  // Fetch Mentors from API
-  async function fetchMentors() {
-    try {
-      const response = await fetch('/api/mentors');
-      if (!response.ok) throw new Error('Failed to fetch mentors');
-      mentorsList = await response.json();
-      renderMentors(mentorsList);
-    } catch (error) {
-      console.error('Error fetching mentors:', error);
-      mentorsGrid.innerHTML = `
-        <div class="error-card" style="grid-column: 1/-1; text-align: center; padding: 2rem; border: 1px dashed #ef4444; border-radius: var(--radius-md); background: #fef2f2;">
-          <p style="color: #b91c1c; font-weight: 600;">Failed to load crisis mentors.</p>
-          <p style="font-size: 0.85rem; color: #7f1d1d; margin-top: 0.5rem;">Please check your server connection and try again.</p>
-        </div>
-      `;
-    }
-  }
-
-  // Render Mentor Cards to Dashboard
-  function renderMentors(mentors) {
-    if (mentors.length === 0) {
-      mentorsGrid.innerHTML = '<p>No mentors available at this time.</p>';
-      return;
-    }
-
-    mentorsGrid.innerHTML = mentors.map(mentor => {
-      const initials = mentor.name.split(' ').map(n => n[0]).join('');
-      return `
-        <article class="mentor-card" data-id="${mentor.id}">
-          <div class="mentor-header">
-            <div class="mentor-avatar-fallback">${initials}</div>
-            <span class="mentor-experience-badge">${mentor.years_of_experience} yrs exp</span>
-          </div>
-          <h4 class="mentor-name">${mentor.name}</h4>
-          <span class="mentor-expertise">${mentor.area_of_expertise}</span>
-          <p class="mentor-bio">${mentor.bio}</p>
-          <button class="mentor-action-btn" data-mentor-name="${mentor.name}" data-mentor-expertise="${mentor.area_of_expertise}">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
-            Consult ${mentor.name.split(' ')[0]}
-          </button>
-        </article>
-      `;
-    }).join('');
-
-    // Attach click events to "Consult" buttons
-    const consultBtns = mentorsGrid.querySelectorAll('.mentor-action-btn');
-    consultBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const name = btn.getAttribute('data-mentor-name');
-        const expertise = btn.getAttribute('data-mentor-expertise');
-        
-        // Open Chat Widget
-        if (chatWidget.classList.contains('hidden')) {
-          toggleChat();
-        }
-        
-        // Pre-fill query and send
-        sendDirectQuery(`I would like to match with ${name} for ${expertise}. Can you tell me more about how they can help?`);
-      });
-    });
-  }
 
   // Toggle Chat Visibility
   function toggleChat() {

@@ -40,316 +40,16 @@
 
 body {
   font-family: var(--font-body);
-  background-color: var(--bg-primary);
+  background-color: #0f172a; /* Sleek dark slate */
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(13, 148, 136, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(217, 119, 6, 0.05) 0px, transparent 50%);
   color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
-}
-
-/* App Layout */
-.app-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem 5rem 1.5rem;
-  position: relative;
-}
-
-/* Header */
-.main-header {
-  margin-bottom: 2.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.header-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.logo-area {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.logo-icon {
-  width: 32px;
-  height: 32px;
-  color: var(--primary);
-  flex-shrink: 0;
-}
-
-.logo-area h1 {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 2.2rem;
-  color: #1e293b;
-  letter-spacing: -0.03em;
-}
-
-.logo-area h1 span {
-  color: var(--primary);
-}
-
-.tagline {
-  color: var(--text-secondary);
-  font-size: 1.1rem;
-  font-weight: 400;
-}
-
-/* Dashboard Grid */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 1.8fr 1fr;
-  gap: 2rem;
-}
-
-@media (max-width: 900px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Cards styling */
-.hero-card, .mentors-section, .topics-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 2rem;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.hero-card:hover, .topics-card:hover {
-  box-shadow: var(--shadow-md);
-}
-
-/* Welcome Card */
-.hero-card {
-  grid-column: 1 / -1;
-  background: linear-gradient(135deg, #ffffff 60%, var(--primary-light) 100%);
-  border-left: 5px solid var(--primary);
-}
-
-.hero-card h2 {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  color: #1e293b;
-  letter-spacing: -0.02em;
-}
-
-.hero-card .highlight {
-  color: var(--primary);
-}
-
-.hero-card p {
-  font-size: 1.05rem;
-  color: var(--text-secondary);
-  margin-bottom: 1rem;
-  max-width: 900px;
-}
-
-.hero-card .sub-text {
-  font-size: 0.95rem;
-  color: var(--text-light);
-  margin-bottom: 0;
-}
-
-/* Section Header */
-.section-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-
-.section-icon {
-  width: 24px;
-  height: 24px;
-  color: var(--primary);
-}
-
-.section-header h3 {
-  font-family: var(--font-heading);
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-
-/* Mentors Catalog Section */
-.mentors-section {
-  display: flex;
-  flex-direction: column;
-}
-
-.mentors-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.25rem;
-  margin-top: 0.5rem;
-}
-
-/* Mentor Cards */
-.mentor-card {
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 1.5rem;
-  background-color: var(--bg-card);
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease, border-color 0.2s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.mentor-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--primary);
-}
-
-.mentor-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
-.mentor-avatar-fallback {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-full);
-  background-color: var(--primary-light);
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 1.1rem;
-  font-family: var(--font-heading);
-}
-
-.mentor-experience-badge {
-  background-color: var(--accent-light);
-  color: var(--accent);
-  padding: 0.25rem 0.6rem;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.mentor-name {
-  font-family: var(--font-heading);
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #1e293b;
-}
-
-.mentor-expertise {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--primary);
-  background: var(--primary-light);
-  padding: 0.25rem 0.5rem;
-  border-radius: var(--radius-sm);
-  align-self: flex-start;
-  margin-bottom: 0.25rem;
-}
-
-.mentor-bio {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  flex-grow: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.mentor-action-btn {
-  background-color: var(--primary);
-  color: white;
-  border: none;
-  padding: 0.6rem 1rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: background-color 0.2s ease;
-  width: 100%;
-  margin-top: 0.5rem;
-}
-
-.mentor-action-btn:hover {
-  background-color: var(--primary-hover);
-}
-
-.mentor-action-btn svg {
-  width: 16px;
-  height: 16px;
-}
-
-/* Supportive Framework Topics Card */
-.topics-card h3 {
-  font-family: var(--font-heading);
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-}
-
-.topics-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.topic-item {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-}
-
-.topic-icon-wrap {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  flex-shrink: 0;
-}
-
-.topic-icon-wrap.debt { background-color: #ef4444; }
-.topic-icon-wrap.budget { background-color: #3b82f6; }
-.topic-icon-wrap.loans { background-color: #10b981; }
-.topic-icon-wrap.housing { background-color: #f59e0b; }
-
-.topic-icon-wrap svg {
-  width: 20px;
-  height: 20px;
-  stroke: currentColor;
-}
-
-.topic-item h4 {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 1.05rem;
-  margin-bottom: 0.25rem;
-}
-
-.topic-item p {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+  overflow: hidden; /* No scrolling needed as there's only the chatbot widget */
 }
 
 /* Floating Chat Toggle Button */
@@ -357,17 +57,16 @@ body {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
   background-color: var(--primary);
   color: white;
   border: none;
-  padding: 0.85rem 1.5rem;
-  border-radius: var(--radius-full);
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-weight: 600;
-  font-size: 1rem;
+  justify-content: center;
   box-shadow: var(--shadow-lg);
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease;
   z-index: 999;
@@ -375,12 +74,12 @@ body {
 
 .chat-toggle-btn:hover {
   background-color: var(--primary-hover);
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .chat-btn-icon {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
 }
 
 .chat-btn-pulse {
