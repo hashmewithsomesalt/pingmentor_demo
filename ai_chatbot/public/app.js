@@ -7,10 +7,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const chatForm = document.getElementById('chat-form');
   const chatInput = document.getElementById('chat-input');
   const typingIndicator = document.getElementById('typing-indicator');
-  const suggestionChips = document.querySelectorAll('.chip-btn');
+  const suggestionChipsContainer = document.getElementById('suggestion-chips');
 
   // Chat State
   let chatHistory = []; // format: { role: 'user' | 'model', text: string }
+
+  // Initial domains suggestions (6 domains)
+  const INITIAL_DOMAINS = [
+    { label: 'Credit Card & Debt', query: 'I am facing issues with Credit Card & Debt.' },
+    { label: 'Insurance Claims', query: 'I am facing issues with Insurance Claims.' },
+    { label: 'NPA & Loan Default', query: 'I am facing issues with NPA & Loan Default.' },
+    { label: 'Wealth & Securities', query: 'I am facing issues with Wealth & Securities.' },
+    { label: 'Financial Crunch', query: 'I am experiencing a Financial Crunch.' },
+    { label: 'Other', query: 'I am facing a different financial dispute.' }
+  ];
 
   // Event Listeners
   chatToggleBtn.addEventListener('click', toggleChat);
@@ -18,15 +28,38 @@ document.addEventListener('DOMContentLoaded', () => {
   chatForm.addEventListener('click', () => chatInput.focus());
   chatForm.addEventListener('submit', handleChatSubmit);
 
-  // Suggestion Chips Click Handler
-  suggestionChips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      const query = chip.getAttribute('data-query');
-      if (query) {
-        sendDirectQuery(query);
-      }
+  // Function to render suggestion chips dynamically
+  function renderSuggestionChips(chips) {
+    if (!suggestionChipsContainer) return;
+    suggestionChipsContainer.innerHTML = '';
+    
+    if (!chips || chips.length === 0) {
+      suggestionChipsContainer.style.display = 'none';
+      return;
+    }
+    suggestionChipsContainer.style.display = 'flex';
+
+    chips.forEach(chip => {
+      const btn = document.createElement('button');
+      btn.className = 'chip-btn';
+      btn.type = 'button';
+      
+      const labelText = typeof chip === 'string' ? chip : (chip.label || '');
+      const queryText = typeof chip === 'string' ? chip : (chip.query || labelText);
+      
+      btn.textContent = labelText;
+      btn.setAttribute('data-query', queryText);
+      
+      btn.addEventListener('click', () => {
+        sendDirectQuery(queryText);
+      });
+      
+      suggestionChipsContainer.appendChild(btn);
     });
-  });
+  }
+
+  // Render initial domains
+  renderSuggestionChips(INITIAL_DOMAINS);
 
   // Toggle Chat Visibility
   function toggleChat() {
@@ -100,6 +133,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update local chat history for subsequent turns
         chatHistory.push({ role: 'user', text: messageText });
         chatHistory.push({ role: 'model', text: data.text });
+
+        // Update suggestion chips dynamically based on the AI's response
+        if (data.suggestions && Array.isArray(data.suggestions)) {
+          renderSuggestionChips(data.suggestions);
+        } else {
+          renderSuggestionChips([]);
+        }
       }
 
     } catch (error) {
