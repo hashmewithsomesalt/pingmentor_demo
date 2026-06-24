@@ -327,10 +327,49 @@ body {
   40% { transform: scale(1.0); }
 }
 
-/* Suggestion Chips */
+/* Suggestion Chips Section */
+.chips-navigation-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.chips-navigation-container::before,
+.chips-navigation-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 48px;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.chips-navigation-container::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0));
+}
+
+.chips-navigation-container::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0));
+}
+
+.chips-navigation-container.show-left::before {
+  opacity: 1;
+}
+
+.chips-navigation-container.show-right::after {
+  opacity: 1;
+}
+
 .suggestion-chips {
   display: flex;
   align-items: center; /* Prevent chips from stretching vertically */
+  flex-grow: 1;
   flex-shrink: 0;     /* Prevent container from shrinking under flex pressure */
   gap: 0.5rem;
   padding: 0.25rem 1.25rem 0.75rem 1.25rem;
@@ -338,13 +377,55 @@ body {
   white-space: nowrap;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
-  /* Premium fade-out effect on the right to indicate scrollability */
-  mask-image: linear-gradient(to right, black 85%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  scroll-behavior: smooth;
+  width: 100%;
 }
 
 .suggestion-chips::-webkit-scrollbar {
   display: none; /* Chrome/Safari */
+}
+
+/* Nav Arrow Buttons styling */
+.nav-arrow {
+  position: absolute;
+  top: calc(50% - 0.25rem); /* center vertically accounting for padding */
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: var(--shadow-md);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.nav-arrow:hover {
+  background-color: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.15);
+}
+
+.nav-arrow:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.nav-arrow.left-arrow {
+  left: 0.5rem;
+}
+
+.nav-arrow.right-arrow {
+  right: 0.5rem;
 }
 
 .chip-btn {

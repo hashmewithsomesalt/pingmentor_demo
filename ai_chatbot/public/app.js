@@ -8,6 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const chatInput = document.getElementById('chat-input');
   const typingIndicator = document.getElementById('typing-indicator');
   const suggestionChipsContainer = document.getElementById('suggestion-chips');
+  const chipsNavigationContainer = document.querySelector('.chips-navigation-container');
+  const leftArrowBtn = document.querySelector('.left-arrow');
+  const rightArrowBtn = document.querySelector('.right-arrow');
+
 
   // Chat State
   let chatHistory = []; // format: { role: 'user' | 'model', text: string }
@@ -28,6 +32,63 @@ document.addEventListener('DOMContentLoaded', () => {
   chatForm.addEventListener('click', () => chatInput.focus());
   chatForm.addEventListener('submit', handleChatSubmit);
 
+  // Click Event Listeners for Nav Arrows
+  if (leftArrowBtn) {
+    leftArrowBtn.addEventListener('click', () => {
+      const scrollOffset = 200;
+      suggestionChipsContainer.scrollBy({ left: -scrollOffset, behavior: 'smooth' });
+    });
+  }
+
+  if (rightArrowBtn) {
+    rightArrowBtn.addEventListener('click', () => {
+      const scrollOffset = 200;
+      suggestionChipsContainer.scrollBy({ left: scrollOffset, behavior: 'smooth' });
+    });
+  }
+
+  // Scroll event listener on suggestion chips container
+  if (suggestionChipsContainer) {
+    suggestionChipsContainer.addEventListener('scroll', updateChipsNavigation);
+  }
+  window.addEventListener('resize', updateChipsNavigation);
+
+  // Update nav arrows visibility based on scroll position and content size
+  function updateChipsNavigation() {
+    if (!suggestionChipsContainer || !leftArrowBtn || !rightArrowBtn) return;
+    
+    const scrollLeft = suggestionChipsContainer.scrollLeft;
+    const maxScrollLeft = Math.max(0, suggestionChipsContainer.scrollWidth - suggestionChipsContainer.clientWidth);
+    const hasScroll = suggestionChipsContainer.scrollWidth > suggestionChipsContainer.clientWidth;
+    
+    if (!hasScroll) {
+      leftArrowBtn.style.display = 'none';
+      rightArrowBtn.style.display = 'none';
+      if (chipsNavigationContainer) {
+        chipsNavigationContainer.classList.remove('show-left', 'show-right');
+      }
+      return;
+    }
+    
+    // Left arrow visibility: hide if container is scrolled completely to the left
+    if (scrollLeft > 2) {
+      leftArrowBtn.style.display = 'flex';
+      if (chipsNavigationContainer) chipsNavigationContainer.classList.add('show-left');
+    } else {
+      leftArrowBtn.style.display = 'none';
+      if (chipsNavigationContainer) chipsNavigationContainer.classList.remove('show-left');
+    }
+    
+    // Right arrow visibility: hide if reaches the maximum scrollable width on the right
+    if (maxScrollLeft - scrollLeft > 2) {
+      rightArrowBtn.style.display = 'flex';
+      if (chipsNavigationContainer) chipsNavigationContainer.classList.add('show-right');
+    } else {
+      rightArrowBtn.style.display = 'none';
+      if (chipsNavigationContainer) chipsNavigationContainer.classList.remove('show-right');
+    }
+  }
+
   // Function to render suggestion chips dynamically
   function renderSuggestionChips(chips) {
     if (!suggestionChipsContainer) return;
@@ -35,10 +96,16 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (!chips || chips.length === 0) {
       suggestionChipsContainer.style.display = 'none';
+      if (chipsNavigationContainer) chipsNavigationContainer.style.display = 'none';
       return;
+    }
+    
+    if (chipsNavigationContainer) {
+      chipsNavigationContainer.style.display = 'flex';
     }
     suggestionChipsContainer.style.display = 'flex';
 
+    // Suggestion Option Chips
     chips.forEach(chip => {
       const btn = document.createElement('button');
       btn.className = 'chip-btn';
@@ -56,6 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
       
       suggestionChipsContainer.appendChild(btn);
     });
+
+    // Update arrows status after rendering
+    setTimeout(updateChipsNavigation, 50);
   }
 
   // Render initial domains
@@ -69,6 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!chatWidget.classList.contains('hidden')) {
       chatInput.focus();
       scrollChatToBottom();
+      updateChipsNavigation();
+      setTimeout(updateChipsNavigation, 100);
+      setTimeout(updateChipsNavigation, 300);
     }
   }
 

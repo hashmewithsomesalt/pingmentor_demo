@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 
@@ -67,7 +67,11 @@
     </div>
 
     <!-- Quick Matches / Suggestion Chips -->
-    <div id="suggestion-chips" class="suggestion-chips"></div>
+    <div class="chips-navigation-container">
+      <button class="nav-arrow left-arrow" style="display: none;">❬</button>
+      <div id="suggestion-chips" class="suggestion-chips"></div>
+      <button class="nav-arrow right-arrow">❭</button>
+    </div>
 
     <!-- Chat Input Form -->
     <form id="chat-form" class="chat-form">
@@ -88,6 +92,6 @@
   </aside>
 
   <!-- App JavaScript -->
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>
