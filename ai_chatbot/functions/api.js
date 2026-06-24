@@ -183,7 +183,7 @@ ${mentorsJsonText}`;
     let response;
     try {
       response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash-lite',
+        model: 'gemini-3.1-flash-lite',
         contents: contents,
         config: {
           systemInstruction: systemInstruction,
@@ -193,7 +193,7 @@ ${mentorsJsonText}`;
         }
       });
     } catch (primaryError) {
-      console.warn('Primary model gemini-2.5-flash-lite failed, attempting fallback model gemini-2.5-flash. Error:', primaryError.message);
+      console.warn('Primary model gemini-3.1-flash-lite failed, attempting fallback model gemini-2.5-flash. Error:', primaryError.message);
       response = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: contents,
