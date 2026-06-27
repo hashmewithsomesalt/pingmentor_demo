@@ -279,12 +279,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Parse Italic: *text*
     html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
-    // 5. Parse Markdown Links: [text](url) -> Escape target inside link safely
-    // Relies on standard Markdown link structure
-    html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    // 5. Parse Markdown Links and raw URLs -> Escape target inside link safely
+    const links = [];
+    
+    // First match and replace markdown links
+    let tempHtml = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (match, text, url) => {
+      const index = links.length;
+      links.push(`<a href="${url}" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline;">${text}</a>`);
+      return `__MD_LINK_${index}__`;
+    });
+
+    // Then match and replace raw URLs starting with http:// or https://
+    tempHtml = tempHtml.replace(/(https?:\/\/[^\s<]+)/g, (match, url) => {
+      // Clean up any trailing punctuation like period, comma, or parenthesis
+      let trailing = '';
+      let cleanUrl = url;
+      const matchTrailing = url.match(/[.,;:?)]+$/);
+      if (matchTrailing) {
+        trailing = matchTrailing[0];
+        cleanUrl = url.substring(0, url.length - trailing.length);
+      }
+      
+      const index = links.length;
+      links.push(`<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline;">${cleanUrl}</a>`);
+      return `__MD_LINK_${index}__${trailing}`;
+    });
 
     // 6. Handle lists and paragraphs
-    const lines = html.split('\n');
+    const lines = tempHtml.split('\n');
     let inBulletList = false;
     let inNumberedList = false;
     const processedLines = [];
@@ -341,6 +363,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (inBulletList) processedLines.push('</ul>');
     if (inNumberedList) processedLines.push('</ol>');
 
-    return processedLines.join('\n');
+    let finalHtml = processedLines.join('\n');
+    finalHtml = finalHtml.replace(/__MD_LINK_(\d+)__/g, (match, index) => {
+      return links[parseInt(index, 10)];
+    });
+    return finalHtml;
   }
 });
